@@ -1,0 +1,48 @@
+@(widgets: Seq[Widget], form: Form[WidgetForm.Data], postUrl: Call)(implicit request: MessagesRequestHeader)
+
+  @main("Widgets") {
+
+    <h1>Widgets</h1>
+
+    @* Flash shows updates to a page *@
+    @request.flash.data.map{ case (name, value) =>
+      <div>@name: @value</div>
+    }
+
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Price</th>
+      </thead>
+      <tbody>
+      @for(w <- widgets) {
+        <tr><td>@w.name</td><td>@w.price</td></tr>
+      }
+      </tbody>
+    </table>
+
+    <hr/>
+
+    @* Global errors are not tied to any particular form field *@
+    @if(form.hasGlobalErrors) {
+      @form.globalErrors.map { error: FormError =>
+        <div>
+          @error.key: @error.message
+        </div>
+      }
+    }
+
+    <form method="post" action="@postUrl">
+      @helper.CSRF.formField
+      <div class="form-group">
+        <label for="exampleInputName">Nombre</label>
+        <input name="name" type="Nombre" class="form-control" id="NombreMain" placeholder="Enter email">
+      </div>
+      <div class="form-group">
+      <label for="exampleInputName">Precio</label>
+      <input name="precio" type="Nombre" class="form-control" id="NombreMain" placeholder="Enter email">
+    </div>
+    </div>
+      <button type="submit" class="btn btn-succes">Create widget</button>
+    </form>
+  
+  }
